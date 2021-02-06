@@ -3,7 +3,8 @@ import "./App.css";
 import CSRFToken from "./api/CSRFToken";
 import { LyricParser } from "./parser/LyricParser";
 
-const actionUrl = "http://jjmean2.pythonanywhere.com/ppt_create/lyrics";
+// const actionUrl = "https://jjmean2.pythonanywhere.com/ppt_create/lyrics";
+const actionUrl = "http://localhost:8000/ppt_create/lyrics";
 function App() {
   const formRef = useRef<HTMLFormElement>(null);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -19,6 +20,7 @@ function App() {
     const parser = new LyricParser(value);
     const formText = parser.toFormText();
     hiddenBodyRef.current.value = formText;
+    console.log(formText);
     formRef.current.submit();
   };
   return (
