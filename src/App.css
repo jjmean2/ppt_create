@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+
+div.wrapper {
+  height: 80vh;
+}
+
+div.page {
+  display: flex;
+  flex-direction: column;
+  height: calc(80vh - 56px);
+  padding: 16px;
+}
+
+textarea#lyrics {
+  height: 50em;
+  max-width: 100%;
+}
+
+div.button-container {
+  display: flex;
+}

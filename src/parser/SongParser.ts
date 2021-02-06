@@ -115,6 +115,7 @@ export class SongParser {
     }
 
     this.bodysWithNoTag = this.bodys.filter(($0) => $0.tag === undefined);
+    console.log("bodysWith NoTAg", this.bodysWithNoTag);
     this.tagBodyMap = new Map(
       this.bodys
         .flatMap(({ tag, lines }) => (tag ? [{ tag, lines }] : []))
@@ -131,8 +132,16 @@ export class SongParser {
       return this.toSlideBodyOrder();
     }
     const flowTokens = splitAsTokens(this.flow).map(($0) => $0.toUpperCase());
+    const usedTokens = [] as string[];
     const bodys = flowTokens.map((token) => {
-      return (token && this.tagBodyMap.get(token)) || token;
+      if (token) {
+        const taggedBody = this.tagBodyMap.get(token);
+        if (taggedBody) {
+          usedTokens.push(token);
+          return taggedBody;
+        }
+      }
+      return token;
     });
     const slidesFromFlowTokens: Slide[] = bodys.flatMap((body) => {
       if (typeof body === "string") {
@@ -141,10 +150,15 @@ export class SongParser {
         return convertBodyToSlide(body);
       }
     });
+    const slidesFromUnusedTaggedBodys = this.bodys
+      .filter(($0) => $0.tag && !usedTokens.includes($0.tag))
+      .flatMap(($0) => convertBodyToSlide($0));
     const slidesFromUntaggedBodys = this.bodysWithNoTag.flatMap(($0) =>
       convertBodyToSlide($0)
     );
-    return slidesFromFlowTokens.concat(slidesFromUntaggedBodys);
+    return slidesFromFlowTokens
+      .concat(slidesFromUnusedTaggedBodys)
+      .concat(slidesFromUntaggedBodys);
   }
 
   toSlides(
