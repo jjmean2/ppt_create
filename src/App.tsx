@@ -5,8 +5,8 @@ import { LyricParser } from "./parser/LyricParser";
 import { format, getDay } from "date-fns";
 import { addDays } from "date-fns/esm";
 
-// const actionUrl = "https://jjmean2.pythonanywhere.com/ppt_create/lyrics";
-const actionUrl = "http://localhost:8000/ppt_create/lyrics";
+const actionUrl = "https://jjmean2.pythonanywhere.com/ppt_create/lyrics";
+// const actionUrl = "http://localhost:8000/ppt_create/lyrics";
 
 const getFilename = (): string => {
   const today = new Date();

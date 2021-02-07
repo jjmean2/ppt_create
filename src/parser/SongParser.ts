@@ -15,9 +15,14 @@ function splitArrayBySize<T>(array: T[], size: number): T[][] {
 
 function convertBodyToSlide(body: Body, lineSize = 2): Slide[] {
   const { tag, lines } = body;
-  return splitArrayBySize(lines, lineSize).map((lines) => ({
+  const processed = lines
+    .map(($0) => $0.trim())
+    .join("\n")
+    .replace(/\/\/\n*/g, "\n\n")
+    .replace(/\/\n*/g, "\n");
+  return processed.split(/\n\n/).map((slideBody) => ({
     tag: tag,
-    body: lines.join("\n"),
+    body: slideBody,
   }));
 }
 
@@ -115,7 +120,7 @@ export class SongParser {
     }
 
     this.bodysWithNoTag = this.bodys.filter(($0) => $0.tag === undefined);
-    console.log("bodysWith NoTAg", this.bodysWithNoTag);
+    console.log("bodysWith NoTag", this.bodysWithNoTag);
     this.tagBodyMap = new Map(
       this.bodys
         .flatMap(({ tag, lines }) => (tag ? [{ tag, lines }] : []))
@@ -162,7 +167,7 @@ export class SongParser {
   }
 
   toSlides(
-    method: SlideConvertMethod = SlideConvertMethod.withFlowOrder
+    method: SlideConvertMethod = SlideConvertMethod.withBodyOrder
   ): Slide[] {
     switch (method) {
       case SlideConvertMethod.withFlowOrder:
