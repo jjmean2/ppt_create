@@ -15,14 +15,21 @@ function splitArrayBySize<T>(array: T[], size: number): T[][] {
 
 function convertBodyToSlide(body: Body, lineSize = 2): Slide[] {
   const { tag, lines } = body;
+  console.log("## lines", lines);
   const processed = lines
     .map(($0) => $0.trim())
     .join("\n")
     .replace(/\/\/\n*/g, "\n\n")
-    .replace(/\/\n*/g, "\n");
-  return processed.split(/\n\n/).map((slideBody) => ({
+    .replace(/\/\n*/g, "\n")
+    .split(/\n(\n)+/)
+    .filter(($0) => !/[[:space:]\n]*]/.test($0));
+  console.log("## processed", processed);
+  if (processed.length === 0) {
+    processed.push("");
+  }
+  return processed.map((slideBody) => ({
     tag: tag,
-    body: slideBody,
+    body: slideBody.trim(),
   }));
 }
 

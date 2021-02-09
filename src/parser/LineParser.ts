@@ -80,7 +80,7 @@ const categoryScorer: Partial<Record<LineCategory, Scorer>> = {
     }
   },
   [LineCategory.body]: (text) => {
-    if (/^[\w,"'.)( ]+$/i.test(text)) {
+    if (/^[\w,"'.)(/ -]+$/i.test(text)) {
       return 2;
     }
     return 1;
@@ -89,7 +89,7 @@ const categoryScorer: Partial<Record<LineCategory, Scorer>> = {
     if (/[가-힣]+/.test(text)) {
       return 2;
     }
-    return 1;
+    return 0;
   },
   [LineCategory.separator]: (text) =>
     isSeparator(text) ? scoreRange.certain : scoreRange.notPossible,
