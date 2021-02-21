@@ -1,5 +1,8 @@
 import { LineCategory, splitAsTokens } from "./LineParser";
 
+const lineTerminatorPattern = /\/\n?|\n/g;
+const slideTerminatorPattern = /;\n*|\n\n+/g;
+
 function splitArrayBySize<T>(array: T[], size: number): T[][] {
   const result = [] as T[][];
   for (const element of array) {
@@ -19,17 +22,17 @@ function convertBodyToSlide(body: Body, lineSize = 2): Slide[] {
   const processed = lines
     .map(($0) => $0.trim())
     .join("\n")
-    .replace(/\/\/\n*/g, "\n\n")
-    .replace(/\/\n*/g, "\n")
-    .split(/\n(\n)+/)
-    .filter(($0) => !/[[:space:]\n]*]/.test($0));
+    .replace(slideTerminatorPattern, ";")
+    .replace(lineTerminatorPattern, "/")
+    .split(slideTerminatorPattern)
+    .filter(($0) => /^(?!\s*$).+/.test($0));
   console.log("## processed", processed);
   if (processed.length === 0) {
     processed.push("");
   }
   return processed.map((slideBody) => ({
     tag: tag,
-    body: slideBody.trim(),
+    body: slideBody.replace(/\//g, "\n").trim(),
   }));
 }
 
@@ -174,7 +177,7 @@ export class SongParser {
   }
 
   toSlides(
-    method: SlideConvertMethod = SlideConvertMethod.withBodyOrder
+    method: SlideConvertMethod = SlideConvertMethod.withFlowOrder
   ): Slide[] {
     switch (method) {
       case SlideConvertMethod.withFlowOrder:

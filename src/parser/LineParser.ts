@@ -80,10 +80,11 @@ const categoryScorer: Partial<Record<LineCategory, Scorer>> = {
     }
   },
   [LineCategory.body]: (text) => {
-    if (/^[\w,"'.)(/ -]+$/i.test(text)) {
-      return 2;
-    }
-    return 1;
+    // if (/^[\w\d,"'.)(/ -]+$/i.test(text)) {
+    //   return 2;
+    // }
+    // return 1;
+    return 2;
   },
   [LineCategory.comment]: (text) => {
     if (/[가-힣]+/.test(text)) {
