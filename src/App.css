@@ -56,3 +56,18 @@ textarea#lyrics {
 div.button-container {
   display: flex;
 }
+
+input#delimiter {
+  text-align: center;
+}
+
+.textAreaContainer {
+  position: relative;
+}
+.verticalLine {
+  border-left: thin solid pink;
+  position: absolute;
+  left: 15em;
+  top: 0;
+  height: 100%;
+}

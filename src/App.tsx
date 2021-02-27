@@ -20,6 +20,7 @@ const getFilename = (): string => {
 
 function App() {
   const formRef = useRef<HTMLFormElement>(null);
+  const delimiterInputRef = useRef<HTMLInputElement>(null);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const hiddenBodyRef = useRef<HTMLInputElement>(null);
   const filenameRef = useRef<HTMLInputElement>(null);
@@ -37,7 +38,9 @@ function App() {
       return;
     }
     const parser = new LyricParser(value);
-    const formText = parser.toFormText();
+    const formText = parser.toFormText({
+      delimiter: delimiterInputRef.current?.value || undefined,
+    });
     hiddenBodyRef.current.value = formText;
     filenameRef.current.value = getFilename();
     console.log(formText);
@@ -87,16 +90,33 @@ function App() {
             <input ref={filenameRef} type="hidden" name="filename"></input>
           </form>
           <div className="page">
+            <div className="row">
+              <div className="col-xs-2">
+                <label htmlFor="delimiter">구분자: </label>
+                <input
+                  ref={delimiterInputRef}
+                  id="delimiter"
+                  className="form-control"
+                  placeholder="/"
+                  type="text"
+                />
+              </div>
+              <div className="col"></div>
+            </div>
+            <br />
             <div className="button-container">
               <button className="btn btn-primary" onClick={handleButtonClick}>
                 제출
               </button>
             </div>
-            <textarea
-              className="form-control"
-              ref={textAreaRef}
-              id="lyrics"
-            ></textarea>
+            <div className="textAreaContainer">
+              <textarea
+                className="form-control"
+                ref={textAreaRef}
+                id="lyrics"
+              ></textarea>
+              <div className="verticalLine" />
+            </div>
           </div>
         </div>
       </div>{" "}

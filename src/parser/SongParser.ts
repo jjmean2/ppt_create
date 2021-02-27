@@ -3,29 +3,43 @@ import { LineCategory, splitAsTokens } from "./LineParser";
 const lineTerminatorPattern = /\/\n?|\n/g;
 const slideTerminatorPattern = /;\n*|\n\n+/g;
 
-function splitArrayBySize<T>(array: T[], size: number): T[][] {
-  const result = [] as T[][];
-  for (const element of array) {
-    const last = result[result.length - 1];
-    if (last && last.length < size) {
-      last.push(element);
-    } else {
-      result.push([element]);
-    }
-  }
-  return result;
+function trimEachLine(text: string) {
+  return text
+    .split("\n")
+    .map(($0) => $0.trim())
+    .join("\n");
 }
 
-function convertBodyToSlide(body: Body, lineSize = 2): Slide[] {
+function capitalizeEachLine(text: string) {
+  return text
+    .split("\n")
+    .map(($0) => ($0[0]?.toUpperCase() ?? "") + $0.slice(1))
+    .join("\n");
+}
+
+function escapeRegExp(string: string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
+}
+
+function convertBodyToSlide(body: Body, delimiter: string): Slide[] {
+  const lineDelim = new RegExp(`\\n?${escapeRegExp(delimiter)}\\n?`, "g");
+  const slideDelim = new RegExp(
+    `\\n?${escapeRegExp(`${delimiter}${delimiter}`)}\\n?`,
+    "g"
+  );
+  const slideTerm = /\n\n+/g;
+
   const { tag, lines } = body;
   console.log("## lines", lines);
-  const processed = lines
+  const delimProcessed = lines
     .map(($0) => $0.trim())
     .join("\n")
-    .replace(slideTerminatorPattern, ";")
-    .replace(lineTerminatorPattern, "/")
-    .split(slideTerminatorPattern)
+    .replace(slideDelim, "\n\n")
+    .replace(lineDelim, "\n");
+  const processed = capitalizeEachLine(trimEachLine(delimProcessed))
+    .split(slideTerm)
     .filter(($0) => /^(?!\s*$).+/.test($0));
+
   console.log("## processed", processed);
   if (processed.length === 0) {
     processed.push("");
@@ -138,13 +152,15 @@ export class SongParser {
     );
   }
 
-  toSlideBodyOrder(): Slide[] {
-    return this.bodys.flatMap(($0) => convertBodyToSlide($0));
+  toSlideBodyOrder(options: { delimiter: string }): Slide[] {
+    const { delimiter } = options;
+    return this.bodys.flatMap(($0) => convertBodyToSlide($0, delimiter));
   }
 
-  toSlideFlowOrder(): Slide[] {
+  toSlideFlowOrder(options: { delimiter: string }): Slide[] {
+    const { delimiter } = options;
     if (this.flow === undefined) {
-      return this.toSlideBodyOrder();
+      return this.toSlideBodyOrder(options);
     }
     const flowTokens = splitAsTokens(this.flow).map(($0) => $0.toUpperCase());
     const usedTokens = [] as string[];
@@ -162,14 +178,14 @@ export class SongParser {
       if (typeof body === "string") {
         return [{ tag: body, body: "" }];
       } else {
-        return convertBodyToSlide(body);
+        return convertBodyToSlide(body, delimiter);
       }
     });
     const slidesFromUnusedTaggedBodys = this.bodys
       .filter(($0) => $0.tag && !usedTokens.includes($0.tag))
-      .flatMap(($0) => convertBodyToSlide($0));
+      .flatMap(($0) => convertBodyToSlide($0, delimiter));
     const slidesFromUntaggedBodys = this.bodysWithNoTag.flatMap(($0) =>
-      convertBodyToSlide($0)
+      convertBodyToSlide($0, delimiter)
     );
     return slidesFromFlowTokens
       .concat(slidesFromUnusedTaggedBodys)
@@ -177,15 +193,22 @@ export class SongParser {
   }
 
   toSlides(
-    method: SlideConvertMethod = SlideConvertMethod.withFlowOrder
+    options: {
+      method?: SlideConvertMethod;
+      delimiter?: string;
+    } = {}
   ): Slide[] {
+    const {
+      method = SlideConvertMethod.withFlowOrder,
+      delimiter = "/",
+    } = options;
     switch (method) {
       case SlideConvertMethod.withFlowOrder:
-        return this.toSlideFlowOrder();
+        return this.toSlideFlowOrder({ delimiter });
       case SlideConvertMethod.withBodyOrder:
-        return this.toSlideBodyOrder();
+        return this.toSlideBodyOrder({ delimiter });
       default:
-        return this.toSlideBodyOrder();
+        return this.toSlideBodyOrder({ delimiter });
     }
   }
 
