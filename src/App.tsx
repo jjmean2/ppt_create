@@ -21,6 +21,7 @@ const getFilename = (): string => {
 function App() {
   const formRef = useRef<HTMLFormElement>(null);
   const delimiterInputRef = useRef<HTMLInputElement>(null);
+  const filenameInputRef = useRef<HTMLInputElement>(null);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const hiddenBodyRef = useRef<HTMLInputElement>(null);
   const filenameRef = useRef<HTMLInputElement>(null);
@@ -42,7 +43,8 @@ function App() {
       delimiter: delimiterInputRef.current?.value || undefined,
     });
     hiddenBodyRef.current.value = formText;
-    filenameRef.current.value = getFilename();
+    filenameRef.current.value =
+      filenameInputRef.current?.value || getFilename();
     console.log(formText);
     formRef.current.submit();
   };
@@ -101,7 +103,18 @@ function App() {
                   type="text"
                 />
               </div>
-              <div className="col"></div>
+            </div>
+            <div className="row">
+              <div className="col-xs-2">
+                <label htmlFor="filename">파일명: </label>
+                <input
+                  ref={filenameInputRef}
+                  id="filename"
+                  className="form-control"
+                  placeholder={getFilename()}
+                  type="text"
+                />
+              </div>
             </div>
             <br />
             <div className="button-container">
