@@ -128,7 +128,8 @@ function App() {
                 ref={textAreaRef}
                 id="lyrics"
               ></textarea>
-              <div className="verticalLine" />
+              <div className="verticalLine66" />
+              <div className="verticalLine90" />
             </div>
           </div>
         </div>

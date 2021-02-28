@@ -64,10 +64,18 @@ input#delimiter {
 .textAreaContainer {
   position: relative;
 }
-.verticalLine {
+.verticalLine66 {
   border-left: thin solid pink;
   position: absolute;
   left: 15em;
+  top: 0;
+  height: 100%;
+}
+
+.verticalLine90 {
+  border-left: thin solid #81cafb;
+  position: absolute;
+  left: 18ch;
   top: 0;
   height: 100%;
 }
