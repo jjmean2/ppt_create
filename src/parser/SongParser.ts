@@ -1,8 +1,5 @@
 import { LineCategory, splitAsTokens } from "./LineParser";
 
-const lineTerminatorPattern = /\/\n?|\n/g;
-const slideTerminatorPattern = /;\n*|\n\n+/g;
-
 function trimEachLine(text: string) {
   return text
     .split("\n")
