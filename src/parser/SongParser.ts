@@ -120,7 +120,11 @@ export class SongParser {
         }
       }
       if (part.category === LineCategory.tag) {
-        currentTag = part.lines[0].toUpperCase() || undefined;
+        currentTag =
+          part.lines[0]
+            ?.replace(/^#/, "")
+            .replace(/[\][]/g, "")
+            .toUpperCase() || undefined;
         console.error("set current tag", currentTag);
         if (part.lines.length > 1) {
           this.logDiscard("tag", part.lines.slice(1), ", ");
@@ -130,7 +134,7 @@ export class SongParser {
         console.error("current tag for body", currentTag);
         const lastBody = this.bodys[this.bodys.length - 1];
         if (lastBody && currentTag && lastBody.tag === currentTag) {
-          lastBody.lines = lastBody.lines.concat(part.lines);
+          lastBody.lines = lastBody.lines.concat("\n", part.lines);
         } else {
           this.bodys.push({ tag: currentTag, lines: part.lines });
         }

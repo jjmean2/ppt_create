@@ -16,18 +16,26 @@ export enum LineCategory {
 }
 
 const tagPatterns = [
-  /^V\d?$/i,
-  /^P?C\d?$/i,
-  /^B\d?$/i,
-  /^E(nding)?$/i,
-  /^\[[A-Z]+\]$/i,
+  /^(V\d?)$/i,
+  /^(P?C\d?)$/i,
+  /^(B\d?)$/i,
+  /^(E(nding)?)$/i,
+  /^\[([\w\d]+)\]$/i,
+  /^#([\w\d]+)$/i,
 ];
 const isTag = (arg: string) => tagPatterns.some((pattern) => pattern.test(arg));
-export const flowTokenPatterns = [...tagPatterns, /^x\d$/i, /^간주$/];
+const flowTokenDelimiterPattern = /[^\w\d)(가-힣]+/;
+export const flowTokenPatterns = [
+  ...tagPatterns,
+  /^\(?x\d\)?$/i,
+  /^간주$/,
+  /^조용히$/,
+  /^\([가-힣]+\)$/,
+];
 export const isFlowToken = (arg: string): boolean =>
   flowTokenPatterns.some((pattern) => pattern.test(arg));
 export const splitAsTokens = (arg: string): string[] =>
-  arg.split(/[\W_]/).filter(($0) => /\w/.test($0));
+  arg.split(flowTokenDelimiterPattern);
 
 const separatorPatterns = [/^[-=*][-=* ]+[-=*]$/];
 const isSeparator = (arg: string) =>
