@@ -98,7 +98,9 @@ export class SongParser {
       if (part.category === LineCategory.title) {
         currentTag = undefined;
         if (this.title === undefined) {
-          this.title = part.lines.join("\n");
+          this.title = part.lines
+            .map((line) => line.replace(/^@title:/i, ""))
+            .join("\n");
         } else {
           this.logDiscard("title", part);
         }
@@ -106,7 +108,9 @@ export class SongParser {
       if (part.category === LineCategory.flow) {
         currentTag = undefined;
         if (this.flow === undefined) {
-          this.flow = part.lines.join(" ");
+          this.flow = part.lines
+            .map((line) => line.replace(/^@flow:/i, ""))
+            .join(" ");
         } else {
           this.logDiscard("flow", part, " ");
         }

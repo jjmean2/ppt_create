@@ -35,7 +35,7 @@ export const flowTokenPatterns = [
 export const isFlowToken = (arg: string): boolean =>
   flowTokenPatterns.some((pattern) => pattern.test(arg));
 export const splitAsTokens = (arg: string): string[] =>
-  arg.split(flowTokenDelimiterPattern);
+  arg.split(flowTokenDelimiterPattern).filter((token) => Boolean(token));
 
 const separatorPatterns = [/^[-=*][-=* ]+[-=*]$/];
 const isSeparator = (arg: string) =>
@@ -57,6 +57,9 @@ const categoryScorer: Partial<Record<LineCategory, Scorer>> = {
     text === "" ? scoreRange.certain : scoreRange.notPossible,
   [LineCategory.date]: (text) => undefined,
   [LineCategory.title]: (text) => {
+    if (/^@title:/i.test(text)) {
+      return scoreRange.certain;
+    }
     let score = 0;
     if (/^\d./.test(text)) {
       score += 2;
@@ -72,6 +75,10 @@ const categoryScorer: Partial<Record<LineCategory, Scorer>> = {
   [LineCategory.linkUrl]: (text) =>
     /^https?:\/\/.*$/.test(text) ? scoreRange.certain : scoreRange.notPossible,
   [LineCategory.flow]: (text) => {
+    if (/^@flow:/i.test(text)) {
+      return scoreRange.certain;
+    }
+
     const tokens = splitAsTokens(text);
     if (tokens.length === 1) {
       return scoreRange.notPossible;
