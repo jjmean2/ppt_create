@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/ppt_create/static/css/main.d48d4571.chunk.css",
-    "main.js": "/ppt_create/static/js/main.5bcfd2b0.chunk.js",
-    "main.js.map": "/ppt_create/static/js/main.5bcfd2b0.chunk.js.map",
+    "main.js": "/ppt_create/static/js/main.a1000ff8.chunk.js",
+    "main.js.map": "/ppt_create/static/js/main.a1000ff8.chunk.js.map",
     "runtime-main.js": "/ppt_create/static/js/runtime-main.b47bd41d.js",
     "runtime-main.js.map": "/ppt_create/static/js/runtime-main.b47bd41d.js.map",
     "static/js/2.09e5d39b.chunk.js": "/ppt_create/static/js/2.09e5d39b.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.b47bd41d.js",
     "static/js/2.09e5d39b.chunk.js",
     "static/css/main.d48d4571.chunk.css",
-    "static/js/main.5bcfd2b0.chunk.js"
+    "static/js/main.a1000ff8.chunk.js"
   ]
 }
