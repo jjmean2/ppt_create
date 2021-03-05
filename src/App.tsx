@@ -42,6 +42,10 @@ function App() {
     const formText = parser.toFormText({
       delimiter: delimiterInputRef.current?.value || undefined,
     });
+    if (!formText) {
+      alert("PPT로 만들 가사가 없습니다. 내용을 확인해주세요.");
+      return;
+    }
     hiddenBodyRef.current.value = formText;
     filenameRef.current.value =
       filenameInputRef.current?.value || getFilename();
