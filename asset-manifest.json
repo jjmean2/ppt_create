@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/ppt_create/static/css/main.8a19d743.chunk.css",
-    "main.js": "/ppt_create/static/js/main.8e8b55c3.chunk.js",
-    "main.js.map": "/ppt_create/static/js/main.8e8b55c3.chunk.js.map",
+    "main.css": "/ppt_create/static/css/main.d48d4571.chunk.css",
+    "main.js": "/ppt_create/static/js/main.5bcfd2b0.chunk.js",
+    "main.js.map": "/ppt_create/static/js/main.5bcfd2b0.chunk.js.map",
     "runtime-main.js": "/ppt_create/static/js/runtime-main.b47bd41d.js",
     "runtime-main.js.map": "/ppt_create/static/js/runtime-main.b47bd41d.js.map",
     "static/js/2.09e5d39b.chunk.js": "/ppt_create/static/js/2.09e5d39b.chunk.js",
@@ -10,13 +10,13 @@
     "static/js/3.a884ff60.chunk.js": "/ppt_create/static/js/3.a884ff60.chunk.js",
     "static/js/3.a884ff60.chunk.js.map": "/ppt_create/static/js/3.a884ff60.chunk.js.map",
     "index.html": "/ppt_create/index.html",
-    "static/css/main.8a19d743.chunk.css.map": "/ppt_create/static/css/main.8a19d743.chunk.css.map",
+    "static/css/main.d48d4571.chunk.css.map": "/ppt_create/static/css/main.d48d4571.chunk.css.map",
     "static/js/2.09e5d39b.chunk.js.LICENSE.txt": "/ppt_create/static/js/2.09e5d39b.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.b47bd41d.js",
     "static/js/2.09e5d39b.chunk.js",
-    "static/css/main.8a19d743.chunk.css",
-    "static/js/main.8e8b55c3.chunk.js"
+    "static/css/main.d48d4571.chunk.css",
+    "static/js/main.5bcfd2b0.chunk.js"
   ]
 }
