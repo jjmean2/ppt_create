@@ -79,3 +79,7 @@ input#delimiter {
   top: 0;
   height: 100%;
 }
+
+textarea#lyrics::placeholder {
+  color: #cecece;
+}
