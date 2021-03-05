@@ -6,17 +6,6 @@ import { format, getDay } from "date-fns";
 import { addDays } from "date-fns/esm";
 
 const example = `
-* 줄바꿈을 하면 슬라이드 내에서도 줄바꿈이 됩니다.
-* 두 줄 이상 띄우면 슬라이드가 구분됩니다.
-* 가사 앞에는 파트 태그를 붙일 수 있습니다. (V1, V, C, PC, 등등)
-* 아무 단어나 앞에 #을 붙여도 파트 태그로 인식합니다. (#CE, #Ending, 등등)
-* 파트 태그가 나오면 그 다음 파트 태그가 나오기 전까지의 가사가 그 파트에 속합니다.
-* @flow: 는 각 파트의 순서를 지정하는 줄로 여기서 지정한 파트 순서대로 슬라이드가 배치됩니다.
-* @flow: 줄 자체는 PPT에 들어가지 않습니다.
-* @title: 줄은 제목을 지정하는 줄로 이 줄이 있으면 새로운 곡의 시작으로 봅니다.
-* @title: 줄 자체는 PPT에 들어가지 않습니다.
-
-다음은 예시입니다.
 ----------------------------
 @title: All to Jesus I Surrender (찬송가 내게있는모든것을) (C)
 @flow: V1 C V2 C C
@@ -42,6 +31,26 @@ Humbly at His feet I bow,
 Worldly pleasures all forsaken;
 Take me, Jesus, take me now.
 ---------------------------
+
+다음은 규칙입니다.
+
+* 줄바꿈을 하면 슬라이드 내에서도 줄바꿈이 됩니다.
+
+* 두 줄 이상 띄우면 슬라이드가 구분됩니다.
+
+* 가사 앞에는 파트 태그를 붙일 수 있습니다. (V1, V, C, PC, 등등)
+
+* 아무 단어나 앞에 #을 붙여도 파트 태그로 인식합니다. (#CE, #Ending, 등등)
+
+* 파트 태그가 나오면 그 다음 파트 태그가 나오기 전까지의 가사가 그 파트에 속합니다.
+
+* @flow: 는 각 파트의 순서를 지정하는 줄로 여기서 지정한 파트 순서대로 슬라이드가 배치됩니다.
+
+* @flow: 줄 자체는 PPT에 들어가지 않습니다.
+
+* @title: 줄은 제목을 지정하는 줄로 이 줄이 있으면 새로운 곡의 시작으로 봅니다.
+
+* @title: 줄 자체는 PPT에 들어가지 않습니다.
 `;
 
 const actionUrl = "https://jjmean2.pythonanywhere.com/ppt_create/lyrics";
