@@ -16,15 +16,16 @@ export enum LineCategory {
 }
 
 const tagPatterns = [
-  /^(V\d?)$/i,
-  /^(P?C\d?)$/i,
-  /^(B\d?)$/i,
-  /^(E(nding)?)$/i,
-  /^\[([\w\d]+)\]$/i,
-  /^#([\w\d]+)$/i,
+  /^(V\d?['"]*)$/i,
+  /^(P?C\d?['"]*)$/i,
+  /^(B\d?['"]*)$/i,
+  /^(E(nding)?['"]*)$/i,
+  /^\[([\w\d]+['"]*)\]$/i,
+  /^#([\w\d]+['"]*)$/i,
 ];
-const isTag = (arg: string) => tagPatterns.some((pattern) => pattern.test(arg));
-const flowTokenDelimiterPattern = /[^\w\d)(가-힣]+/;
+export const isTag = (arg: string) =>
+  tagPatterns.some((pattern) => pattern.test(arg));
+const flowTokenDelimiterPattern = /[^'"\w\d)(가-힣]+/;
 export const flowTokenPatterns = [
   ...tagPatterns,
   /^\(?x\d\)?$/i,
@@ -40,6 +41,32 @@ export const splitAsTokens = (arg: string): string[] =>
 const separatorPatterns = [/^[-=*][-=* ]+[-=*]$/];
 const isSeparator = (arg: string) =>
   separatorPatterns.some((pattern) => pattern.test(arg));
+
+const metaNames = ["title", "flow"] as const;
+type MetaName = typeof metaNames[number];
+
+export const metaLinePattern = /^@([\w-]+):/i;
+function getMetaNameInLine(line: string): string | null {
+  const matches = line.match(metaLinePattern);
+  if (matches === null) {
+    return null;
+  }
+  return matches[1];
+}
+function getSingleMatchedMetaName(line: string): MetaName | null {
+  const lineMetaName = getMetaNameInLine(line);
+  if (lineMetaName === null) {
+    return null;
+  }
+  const matchedMetaName = metaNames.filter((metaName) =>
+    metaName.startsWith(lineMetaName)
+  );
+  if (matchedMetaName.length !== 1) {
+    return null;
+  }
+  return matchedMetaName[0];
+}
+
 const scoreRange = {
   certain: 5,
   notPossible: 0,
@@ -57,7 +84,8 @@ const categoryScorer: Partial<Record<LineCategory, Scorer>> = {
     text === "" ? scoreRange.certain : scoreRange.notPossible,
   [LineCategory.date]: (text) => undefined,
   [LineCategory.title]: (text) => {
-    if (/^@title:/i.test(text)) {
+    const metaName = getSingleMatchedMetaName(text);
+    if (metaName === "title") {
       return scoreRange.certain;
     }
     let score = 0;
@@ -75,7 +103,8 @@ const categoryScorer: Partial<Record<LineCategory, Scorer>> = {
   [LineCategory.linkUrl]: (text) =>
     /^https?:\/\/.*$/.test(text) ? scoreRange.certain : scoreRange.notPossible,
   [LineCategory.flow]: (text) => {
-    if (/^@flow:/i.test(text)) {
+    const metaName = getSingleMatchedMetaName(text);
+    if (metaName === "flow") {
       return scoreRange.certain;
     }
 

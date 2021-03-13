@@ -1,4 +1,9 @@
-import { LineCategory, splitAsTokens } from "./LineParser";
+import {
+  LineCategory,
+  splitAsTokens,
+  isTag,
+  metaLinePattern,
+} from "./LineParser";
 
 function trimEachLine(text: string) {
   return text
@@ -99,7 +104,7 @@ export class SongParser {
         currentTag = undefined;
         if (this.title === undefined) {
           this.title = part.lines
-            .map((line) => line.replace(/^@title:/i, ""))
+            .map((line) => line.replace(metaLinePattern, ""))
             .join("\n");
         } else {
           this.logDiscard("title", part);
@@ -109,7 +114,7 @@ export class SongParser {
         currentTag = undefined;
         if (this.flow === undefined) {
           this.flow = part.lines
-            .map((line) => line.replace(/^@flow:/i, ""))
+            .map((line) => line.replace(metaLinePattern, ""))
             .join(" ");
         } else {
           this.logDiscard("flow", part, " ");
@@ -167,7 +172,9 @@ export class SongParser {
     if (this.flow === undefined) {
       return this.toSlideBodyOrder(options);
     }
-    const flowTokens = splitAsTokens(this.flow).map(($0) => $0.toUpperCase());
+    const flowTokens = splitAsTokens(this.flow)
+      .filter(isTag)
+      .map(($0) => $0.toUpperCase());
     const usedTokens = [] as string[];
     const bodys = flowTokens.map((token) => {
       if (token) {

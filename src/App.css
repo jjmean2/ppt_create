@@ -83,3 +83,7 @@ input#delimiter {
 textarea#lyrics::placeholder {
   color: #cecece;
 }
+
+details.option_detail {
+  text-align: left;
+}

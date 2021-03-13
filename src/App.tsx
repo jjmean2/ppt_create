@@ -68,6 +68,7 @@ const getFilename = (): string => {
 
 function App() {
   const formRef = useRef<HTMLFormElement>(null);
+  const periodInputRef = useRef<HTMLInputElement>(null);
   const delimiterInputRef = useRef<HTMLInputElement>(null);
   const filenameInputRef = useRef<HTMLInputElement>(null);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -144,30 +145,47 @@ function App() {
             <input ref={filenameRef} type="hidden" name="filename"></input>
           </form>
           <div className="page">
-            <div className="row">
-              <div className="col-xs-2">
-                <label htmlFor="delimiter">구분자: </label>
-                <input
-                  ref={delimiterInputRef}
-                  id="delimiter"
-                  className="form-control"
-                  placeholder="/"
-                  type="text"
-                />
+            <details className="option_detail">
+              <summary>옵션</summary>
+              <div className="row">
+                <div className="col-xs-2">
+                  <label htmlFor="delimiter">
+                    곡 마지막 슬라이드에 마침표 추가
+                  </label>
+                  <input
+                    ref={periodInputRef}
+                    id="period"
+                    className="form-control"
+                    placeholder=""
+                    type="checkbox"
+                  />
+                </div>
               </div>
-            </div>
-            <div className="row">
-              <div className="col-xs-2">
-                <label htmlFor="filename">파일명: </label>
-                <input
-                  ref={filenameInputRef}
-                  id="filename"
-                  className="form-control"
-                  placeholder={getFilename()}
-                  type="text"
-                />
+              <div className="row">
+                <div className="col-xs-2">
+                  <label htmlFor="delimiter">구분자: </label>
+                  <input
+                    ref={delimiterInputRef}
+                    id="delimiter"
+                    className="form-control"
+                    placeholder="/"
+                    type="text"
+                  />
+                </div>
               </div>
-            </div>
+              <div className="row">
+                <div className="col-xs-2">
+                  <label htmlFor="filename">파일명: </label>
+                  <input
+                    ref={filenameInputRef}
+                    id="filename"
+                    className="form-control"
+                    placeholder={getFilename()}
+                    type="text"
+                  />
+                </div>
+              </div>
+            </details>
             <br />
             <div className="button-container">
               <button className="btn btn-primary" onClick={handleButtonClick}>
