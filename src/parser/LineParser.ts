@@ -16,8 +16,8 @@ export enum LineCategory {
 }
 
 const tagPatterns = [
-  /^(V\d?['"]*)$/i,
-  /^(P?C\d?['"]*)$/i,
+  /^(V\d?E?['"]*)$/i,
+  /^(P?C\d?E?['"]*)$/i,
   /^(B\d?['"]*)$/i,
   /^(E(nding)?['"]*)$/i,
   /^\[([\w\d]+['"]*)\]$/i,
@@ -89,7 +89,7 @@ const categoryScorer: Partial<Record<LineCategory, Scorer>> = {
       return scoreRange.certain;
     }
     let score = 0;
-    if (/^\d./.test(text)) {
+    if (/^\d\. /.test(text)) {
       score += 2;
     }
     if (/\(\w\)$/.test(text)) {
@@ -113,7 +113,22 @@ const categoryScorer: Partial<Record<LineCategory, Scorer>> = {
       return scoreRange.notPossible;
     }
     const flowTokens = tokens.filter(isFlowToken);
-    return Math.ceil((5 * flowTokens.length) / tokens.length);
+    if (flowTokens.length === 1) {
+      return scoreRange.notPossible;
+    }
+    const flowTokenRatio = flowTokens.length / tokens.length;
+    const invalidFlowTokenCount = tokens.length - flowTokens.length;
+
+    if (tokens.length > 3 && flowTokenRatio === 1) {
+      return 4;
+    }
+    if (tokens.length > 7 && invalidFlowTokenCount <= 2) {
+      return 4;
+    }
+    if (tokens.length > 10 && invalidFlowTokenCount <= 3) {
+      return 4;
+    }
+    return 1;
   },
   [LineCategory.tag]: (text) => {
     if (isTag(text)) {

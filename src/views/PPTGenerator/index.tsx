@@ -1,5 +1,5 @@
 import React, { ReactElement, useRef } from "react";
-import { Box, Button, TextareaAutosize } from "@material-ui/core";
+import { Box, Button } from "@material-ui/core";
 import { experimentalStyled as styled } from "@material-ui/core/styles";
 import { FatalError } from "error/FatalError";
 import asPage from "views/common/asPage";

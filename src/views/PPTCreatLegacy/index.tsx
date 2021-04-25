@@ -3,6 +3,7 @@ import CSRFToken from "api/CSRFToken";
 import { LyricParser } from "parser/LyricParser";
 import { format, getDay } from "date-fns";
 import { addDays } from "date-fns/esm";
+import { Link } from "react-router-dom";
 
 const example = `
 ----------------------------
@@ -106,6 +107,9 @@ function PPTCreateLegacy() {
           <a className="navbar-brand" href="{% url 'lyrics' %}">
             가사 PPT 생성기
           </a>
+          <Link className="navbar-brand" to="experimental">
+            실험 버전
+          </Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -120,11 +124,7 @@ function PPTCreateLegacy() {
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mr-auto">
-              <li className="nav-item active">
-                <a className="nav-link" href="{% url 'lyrics' %}">
-                  가사 생성
-                </a>
-              </li>
+              <li className="nav-item active"></li>
             </ul>
           </div>
         </div>
